@@ -59,7 +59,8 @@ http://docs.ros.org/en/indigo/api/moveit_commander/html/classmoveit__commander_1
 
 Check example
 ```bash
-$ code ur5e_fe/scripts/main_ur5e.py
+$ roscd ur5e_fe
+$ code ./scripts/main_ur5e.py
 ```
 
 
