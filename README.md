@@ -57,8 +57,10 @@ https://ros-planning.github.io/moveit_tutorials/doc/move_group_python_interface/
 class MoveGroupCommander:
 http://docs.ros.org/en/indigo/api/moveit_commander/html/classmoveit__commander_1_1move__group_1_1MoveGroupCommander.html
 
-
-
+Check example
+```bash
+$ code ur5e_fe/scripts/main_ur5e.py
+```
 
 
 
