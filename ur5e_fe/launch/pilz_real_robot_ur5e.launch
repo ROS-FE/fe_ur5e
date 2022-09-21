@@ -1,0 +1,16 @@
+<launch>
+
+  <!-- Start the separate move_group, defined specially for PILZ motion planners-->
+  <include file="$(find ur5e_fe)/launch/include/pilz_move_group.launch.xml">
+      <arg name="allow_trajectory_execution" value="true"/>
+      <arg name="fake_execution" value="false"/>
+      <arg name="moveit_configuration_package" value="ur5e_moveit_config"/>      
+      <arg name="planning_context" value="ur5e_planning_context"/>      
+      <arg name="load_robot_description" value="true"/>
+  </include>
+
+  <!-- <include file="$(find fe_ros)/launch/include/ur5e_planning_context.launch"/> -->
+  
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find ur5e_fe)/rviz/ur5e_moveit.rviz" />
+
+</launch>

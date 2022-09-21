@@ -1,0 +1,5 @@
+<launch>
+
+  <include file="$(find fe_ros)/launch/include/pilz_planning_pipeline.launch.xml" />
+
+</launch>

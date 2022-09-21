@@ -1,0 +1,52 @@
+<launch>
+    <!--INPUT PARAMETERS-->
+    <!--Robot ip input parameter -->
+    <arg name="robot_ip"/>
+
+    <!--Start robot streaming interface (connection to robot)-->
+    <include file="$(find fanuc_cr7ia_support)/launch/robot_interface_streaming_cr7ia.launch">
+        <arg name="robot_ip" value="$(arg robot_ip)"/>
+    </include>
+
+    <!--Start tf publisher (root namespace)-->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
+
+    <!--IMPORTS-->
+    <!--Load cr7ia parameters to parameter server-->
+    <include file="$(find fanuc_cr7ia_support)/launch/load_cr7ia.launch"/>
+
+    <!--Load planning context and robot description-->
+    <include file="$(find fanuc_cr7ia_moveit_config)/launch/planning_context.launch">
+        <arg name="load_robot_description" value="true"/>
+    </include>
+
+    <!--pilz planner namespace-->
+    <group ns="pilz">
+
+        <!-- set exection time param (fanuc controller is too slow for monitoring; to solve this set execution_duration_monitoring to false)-->
+        <param name="move_group/trajectory_execution/allowed_execution_duration_scaling" value="15.0"/>
+        <param name="move_group/trajectory_execution/execution_duration_monitoring" value="false" />
+
+        <!-- start relay for namespace joint state-->
+        <node name="pilz_joint_relay" pkg="topic_tools" type="relay" args="/joint_states joint_states" output="screen"/>
+
+        <!--Start robot move_group interface in pilz namespace-->
+        <include file="$(find fanuc_cr7ia_moveit_config)/launch/move_group.launch">
+            <arg name="pipeline" value="pilz"/>
+            <arg name="publish_monitored_planning_scene" value="true"/>
+            <arg name="fake_execution" value="false"/>
+            <arg name="allow_trajectory_execution" value="true"/>
+            <arg name="max_safe_path_cost" value="1"/>
+            <arg name="jiggle_fraction" value="0.05" />
+        </include>
+
+    </group>
+
+    <!-- move robot to default position --> <!--NOTE: This is required in some cases so the robot_streaming_interface starts publishing the correct tf!-->
+
+    <!-- Run Rviz and load the default config to see the state of the move_group node !!!ROBOT SPECIFIC LAUNCH FILE-->
+    <!--<include file="$(find fanuc_cr7ia_moveit_config)/launch/moveit_rviz.launch">
+        <arg name="config" value="false"/>
+        <arg name="rviz_config" value="$(find fe_ros)/config/ompl.rviz"/>
+    </include>-->
+</launch>
