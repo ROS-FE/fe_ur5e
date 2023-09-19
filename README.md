@@ -64,6 +64,17 @@ Check example:
 $ roscd ur5e_fe
 $ code ./scripts/main_ur5e.py
 ```
+## Use I/O
+States of inputs are published on topic `/ur_hardware_interface/io_states`
 
+```bash
+$ rostopic echo /ur_hardware_interface/io_states
+```
 
+Outputs can be set via service `/ur_hardware_interface/set_io`
+
+```bash
+$ rosservice call /ur_hardware_interface/set_io "fun: 0 pin: 0 state: 0.0"
+```
+Service use `ur_msgs/SetIO Service` (check documentation https://docs.ros.org/en/noetic/api/ur_msgs/html/srv/SetIO.html).
 
