@@ -70,6 +70,7 @@ States of inputs are published on topic `/ur_hardware_interface/io_states`
 ```bash
 $ rostopic echo /ur_hardware_interface/io_states
 ```
+Tool inputs are numbered DI16 and DI17.
 
 Outputs can be set via service `/ur_hardware_interface/set_io`
 
@@ -77,4 +78,21 @@ Outputs can be set via service `/ur_hardware_interface/set_io`
 $ rosservice call /ur_hardware_interface/set_io "fun: 0 pin: 0 state: 0.0"
 ```
 Service use `ur_msgs/SetIO Service` (check documentation https://docs.ros.org/en/noetic/api/ur_msgs/html/srv/SetIO.html). Tool outputs are numbered DO16 and DO17.
+
+To use in python a correct srv type needs to be imported:
+
+```python
+from ur_msgs.srv import SetIO, SetIORequest
+...
+io_service = rospy.ServiceProxy('/ur_hardware_interface/set_io', SetIO)
+...
+msg = SetIORequest()
+msg.fun = 1
+msg.pin = 0
+msg.state = 1.0
+...
+resp = io_service(msg)
+```
+
+
 
